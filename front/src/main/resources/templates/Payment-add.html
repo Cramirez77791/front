@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/core.css" rel="stylesheet"/>
+
+    <!-- Custom links for this page only -->
+    <link class="custom-link" href="css/task/task.css"  />
+
+    <script src="js/jquery.min.js" ></script>
+    <script src="js/bootstrap.min.js" ></script>
+
+    <!-- Custom scripts for this page only -->
+    <script class="custom-script" src="js/task/task.js"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+
+<div class="container">
+    <h2 class="title">Realizar Pago</h2>
+    <div class="card-body" ${creditData}>
+        <form method="post"
+              role="form"
+              th:action="@{/payment/create}">
+        <div class="row">
+            <div class="col">
+                <label for="numero">Numero de credito: </label>
+                <input id="numero" name="numero" class="form-control" disabled th:field="${creditData.id}" />
+            </div>
+            <div class="col">
+                <label for="banco" >Banco: </label>
+                <input id="banco" type="text" disabled class="form-control" th:field="${creditData.bankName}" >
+            </div>
+            <div class="col">
+                <label for="cantidadCuotas">Cantidad coutas a pagar: </label>
+                <select id="cantidadCuotas" class="cantidadCuotas form-control">
+                    <option th:each="i : ${#numbers.sequence(0, creditData.quotaQuntityPending)}" th:value="${i}" th:text="${i}">
+                    </option>
+                </select>
+            </div>
+            <div class="col">
+                <input id="totalAmamountQuotaount" type="hidden"  th:value="${creditData.amount}">
+                <input id="amountQuota" type="hidden"  th:value="${creditData.quotaAmount}">
+                <input id="cantidadCuotasPayment" name="cantidadCuotasPayment" type="hidden" >
+                <input id="codigo" name="codigo" type="hidden" >
+                <input id="payment" name="payment" type="hidden">
+            </div>
+            <div class="col">
+                <label for="amountPay" >Valor a pagar: </label>
+                <input id="amountPay" name="amountPay" type="text" disabled class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-primary" >Submit</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function(){
+       let numero = $("#numero").val();
+        $("#codigo").val(numero);
+    });
+
+    $("#cantidadCuotas").on('change', function(evt){
+        evt.preventDefault()
+        let quantity = $("#cantidadCuotas").val();
+        let amountQuota =$("#amountQuota").val();
+        let amountPayment = quantity*amountQuota;
+
+        $("#amountPay").val(amountPayment);
+        $("#payment").val(amountPayment);
+
+        $("#cantidadCuotasPayment").val(quantity);
+        let numero = $("#numero").val();
+
+        $("#codigo").val(numero);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link href="css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="css/core.css" rel="stylesheet"/>
+
+  <!-- Custom links for this page only -->
+  <link class="custom-link" href="css/task/task.css"  />
+
+  <script src="js/jquery.min.js" ></script>
+  <script src="js/bootstrap.min.js" ></script>
+
+  <!-- Custom scripts for this page only -->
+  <script class="custom-script" src="js/task/task.js"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container form-group">
+  <h2 class="title">Deatalle de la deuda</h2>
+  <div id="task-list" ${creditDetail}>
+
+<div class="row">
+  <div class="col">
+    <label for="numero">Numero de credito: </label>
+  <input id="numero" type="text" disabled th:field="${creditDetail.id}" >
+  </div>
+  <div class="col">
+    <label for="fecha">Fecha: </label>
+    <input id="fecha" type="text" disabled th:field="${creditDetail.creditDate}" >
+  </div>
+  <div class="col">
+    <label for="banco">Banco: </label>
+    <input id="banco" type="text" disabled th:field="${creditDetail.bankName}" >
+  </div>
+</div>
+
+  <div class="row">
+    <div class="col">
+      <label for="montopendiente">Deuda pendiente: </label>
+      <input id="montopendiente" type="text" disabled th:field="${creditDetail.amountPending}">
+    </div>
+    <div class="col">
+      <label for="cuotaspendiente">Cuotas pendientes: </label>
+      <input id="cuotaspendiente" type="text" disabled th:field="${creditDetail.quotaQuntityPending}">
+    </div>
+  </div>
+
+    <div class="row">
+      <div class="col">
+        <label for="montototal">Monto total: </label>
+        <input id="montototal" type="text" disabled th:field="${creditDetail.amount}">
+      </div>
+      <div class="col">
+        <label for="cuotastotales">Cuotas totales: </label>
+        <input id="cuotastotales" type="text" disabled th:field="${creditDetail.quotaQuantity}">
+      </div>
+      <div class="col">
+        <label for="valorcuota">Valor Cuota: </label>
+        <input id="valorcuota" type="text" disabled th:field="${creditDetail.quotaAmount}">
+      </div>
+</div>
+
+  <div class="row">
+    <table class="table table-sm">
+      <thead>
+      <tr class="active">
+        <td>Codigo de pago</td>
+        <td>Monto</td>
+        <td>Fecha</td>
+        <td>Cantidad de Cuotas</td>
+        <td>Acciones</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="payment : ${creditDetail.paymentReportList}">
+        <td th:text="${payment.id}"></td>
+        <td th:text="${payment.amountPayment}"></td>
+        <td th:text="${payment.paymentDate}"></td>
+        <td th:text="${payment.quantityQuotas}"></td>
+       <td> <a href="#" th:href="@{/credits?bankid={bankid}(bankid=${creditDetail.bankId})}" class="glyphicon glyphicon-fast-backward" data-toggle="tooltip" title="Regresar  la lista de Creditos" ></a></td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+  </div>
+</div>
+</body>
+</html>
